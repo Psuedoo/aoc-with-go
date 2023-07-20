@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"sort"
 )
 
 type Elf struct {
@@ -23,11 +24,20 @@ func (g *Group) AddElf(elf Elf) {
 }
 
 func (g *Group) Sort() {
-	g.elves = g.elves
+	sort.Slice(g.elves, func(i, j int) bool {
+		return g.elves[i].calorieCount > g.elves[j].calorieCount
+	})
 }
 
-func CalculateAnswer(filename string) int {
-	return 10
+func CalculateAnswer(filename string, topCount int) int {
+	group := parseElves(filename)
+	group.Sort()
+	answer := 0
+	for i := 0; i < topCount; i++ {
+		answer += group.elves[i].calorieCount
+	}
+
+	return answer
 }
 
 func parseElves(filename string) Group {
@@ -73,5 +83,6 @@ func readFile(filename string) []string {
 }
 
 func main() {
-	print("Hello")
+	answer := CalculateAnswer("data.txt", 1)
+	fmt.Printf("Answer: %d", answer)
 }

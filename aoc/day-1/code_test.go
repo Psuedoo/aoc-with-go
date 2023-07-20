@@ -4,16 +4,28 @@ import (
 	"testing"
 )
 
-// func TestSolution(t *testing.T) {
-// 	answer := CalculateAnswer()
+func TestSolution(t *testing.T) {
+	t.Run("part one", func(t *testing.T) {
+		answer := CalculateAnswer("test_data.txt", 1)
 
-// 	got := answer
-// 	want := 24000
+		got := answer
+		want := 24000
 
-// 	if got != want {
-// 		t.Errorf("Expected '%d' but got '%d'", want, got)
-// 	}
-// }
+		if got != want {
+			t.Errorf("Expected '%d' but got '%d'", want, got)
+		}
+	})
+	t.Run("part two", func(t *testing.T) {
+		answer := CalculateAnswer("test_data.txt", 4)
+
+		got := answer
+		want := 45000
+
+		if got != want {
+			t.Errorf("Expected '%d' but got '%d'", want, got)
+		}
+	})
+}
 
 func TestSortElves(t *testing.T) {
 	unsortedElves := Group{

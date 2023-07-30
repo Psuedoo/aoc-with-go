@@ -15,21 +15,28 @@ func TestAddScore(t *testing.T) {
 }
 
 func TestCalculateScore(t *testing.T) {
-	you := Player{}
-	opp := Player{}
 	t.Run("win case", func(t *testing.T) {
-		// TODO: Fix this test, I don't think the CalculateScore
-		// function is altering the same Player{} that I'm giving it
-		yourChoice := "X"
-		oppChoice := "C"
-
-		CalculateScore(you, opp, yourChoice, oppChoice)
-
-		want := []Player{{score: 7}, {score: 3}}
-		got := []Player{you, opp}
+		want := []*Player{{score: 7}, {score: 3}}
+		got := setupTest("X", "C")
 
 		if !assertSamePlayerSlice(want, got) {
-			t.Errorf("got %d wanted %d", got, want)
+			t.Errorf("got %v wanted %v", got, want)
+		}
+	})
+	t.Run("lose case", func(t *testing.T) {
+		want := []*Player{{score: 1}, {score: 8}}
+		got := setupTest("X", "B")
+
+		if !assertSamePlayerSlice(want, got) {
+			t.Errorf("got %v wanted %v", got, want)
+		}
+	})
+	t.Run("tie case", func(t *testing.T) {
+		want := []*Player{{score: 4}, {score: 4}}
+		got := setupTest("X", "A")
+
+		if !assertSamePlayerSlice(want, got) {
+			t.Errorf("got %v wanted %v", got, want)
 		}
 	})
 }
@@ -44,6 +51,15 @@ func TestRound(t *testing.T) {
 	}
 }
 
+func setupTest(yourChoice, oppChoice string) []*Player {
+	you := &Player{}
+	opp := &Player{}
+
+	CalculateScore(you, opp, yourChoice, oppChoice)
+
+	return []*Player{you, opp}
+}
+
 func assertSameStringSlice(sOne, sTwo []string) bool {
 	for i, str := range sOne {
 		if str != sTwo[i] {
@@ -53,7 +69,7 @@ func assertSameStringSlice(sOne, sTwo []string) bool {
 	return true
 }
 
-func assertSamePlayerSlice(sliceOne, sliceTwo []Player) bool {
+func assertSamePlayerSlice(sliceOne, sliceTwo []*Player) bool {
 	for i, player := range sliceOne {
 		if player.score != sliceTwo[i].score {
 			return false

@@ -50,7 +50,7 @@ func (p *Player) AddScore(number int) {
 	p.score += number
 }
 
-func CalculateScore(playerOne, playerTwo Player, pOneChoice, pTwoChoice string) {
+func CalculateScore(playerOne, playerTwo *Player, pOneChoice, pTwoChoice string) {
 	outcome := winMap[pTwoChoice+pOneChoice]
 	pOneNormChoice := choiceMap[pOneChoice]
 	pTwoNormChoice := choiceMap[pTwoChoice]

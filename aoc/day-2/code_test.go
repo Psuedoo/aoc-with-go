@@ -1,6 +1,8 @@
 package day2
 
-import "testing"
+import (
+	"testing"
+)
 
 func TestAddScore(t *testing.T) {
 	you := Player{}
@@ -14,33 +16,6 @@ func TestAddScore(t *testing.T) {
 	}
 }
 
-func TestCalculateScore(t *testing.T) {
-	t.Run("win case", func(t *testing.T) {
-		want := []*Player{{score: 7}, {score: 3}}
-		got := setupTest("X", "C")
-
-		if !assertSamePlayerSlice(want, got) {
-			t.Errorf("got %v wanted %v", got, want)
-		}
-	})
-	t.Run("lose case", func(t *testing.T) {
-		want := []*Player{{score: 1}, {score: 8}}
-		got := setupTest("X", "B")
-
-		if !assertSamePlayerSlice(want, got) {
-			t.Errorf("got %v wanted %v", got, want)
-		}
-	})
-	t.Run("tie case", func(t *testing.T) {
-		want := []*Player{{score: 4}, {score: 4}}
-		got := setupTest("X", "A")
-
-		if !assertSamePlayerSlice(want, got) {
-			t.Errorf("got %v wanted %v", got, want)
-		}
-	})
-}
-
 func TestRound(t *testing.T) {
 	data := readFile("test_data.txt")
 
@@ -51,7 +26,44 @@ func TestRound(t *testing.T) {
 	}
 }
 
-func setupTest(yourChoice, oppChoice string) []*Player {
+func TestCalculateScore(t *testing.T) {
+	t.Run("win case", func(t *testing.T) {
+		want := []*Player{{score: 7}, {score: 3}}
+		got := setupTestRound("X", "C")
+
+		if !assertSamePlayerSlice(want, got) {
+			t.Errorf("got %v wanted %v", got, want)
+		}
+	})
+	t.Run("lose case", func(t *testing.T) {
+		want := []*Player{{score: 1}, {score: 8}}
+		got := setupTestRound("X", "B")
+
+		if !assertSamePlayerSlice(want, got) {
+			t.Errorf("got %v wanted %v", got, want)
+		}
+	})
+	t.Run("tie case", func(t *testing.T) {
+		want := []*Player{{score: 4}, {score: 4}}
+		got := setupTestRound("X", "A")
+
+		if !assertSamePlayerSlice(want, got) {
+			t.Errorf("got %v wanted %v", got, want)
+		}
+	})
+}
+
+func TestPlayGame(t *testing.T) {
+	got := PlayGame("test_data.txt")
+	want := 15
+
+	if got != want {
+		t.Errorf("got %d, want %d", got, want)
+	}
+
+}
+
+func setupTestRound(yourChoice, oppChoice string) []*Player {
 	you := &Player{}
 	opp := &Player{}
 

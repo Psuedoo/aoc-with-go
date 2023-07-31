@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	s "strings"
 )
 
 var pointMap = map[string]int{
@@ -50,6 +51,11 @@ func (p *Player) AddScore(number int) {
 	p.score += number
 }
 
+type Round struct {
+	yourChoice     string
+	opponentChoice string
+}
+
 func CalculateScore(playerOne, playerTwo *Player, pOneChoice, pTwoChoice string) {
 	outcome := winMap[pTwoChoice+pOneChoice]
 	pOneNormChoice := choiceMap[pOneChoice]
@@ -60,6 +66,20 @@ func CalculateScore(playerOne, playerTwo *Player, pOneChoice, pTwoChoice string)
 
 	playerTwo.AddScore(pointMap[oppositeMap[outcome]])
 	playerTwo.AddScore(pointMap[pTwoNormChoice])
+}
+
+func PlayGame(filename string) int {
+	you := &Player{}
+	opponent := &Player{}
+
+	gameData := readFile(filename)
+
+	for _, round := range gameData {
+		cleanRound := s.Replace(round, " ", "", -1)
+		CalculateScore(you, opponent, string(cleanRound[1]), string(cleanRound[0]))
+	}
+
+	return you.score
 }
 
 func readFile(filename string) []string {
